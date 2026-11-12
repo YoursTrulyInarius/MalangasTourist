@@ -2,7 +2,7 @@
 
 The **Malangas Tourism Management System (MTMS)** is a comprehensive, full-stack municipal web application developed for the **Municipality of Malangas, Zamboanga Sibugay**. 
 
-The system provides tourists with real-time GPS navigation and nearby amenity discovery, empowers private tourism business owners to register listings and submit quality compliance improvements, and equips Local Government Unit (LGU) administrators with verification, rating moderation, and facility monitoring tools.
+The system provides tourists with real-time GPS navigation and nearby amenity discovery, empowers private and public sector tourism applicants to register listings and submit quality compliance improvements, and equips Local Government Unit (LGU) administrators with verification, rating moderation, and facility monitoring tools.
 
 ---
 
@@ -37,20 +37,24 @@ Interactive discovery powered by OpenStreetMap Overpass queries and local databa
 * **Modern Typography:** High-legibility typography via **Google Fonts (Plus Jakarta Sans & Inter)**.
 * **High-Visibility Alert System:** Polished alert banners (`.alert-error`, `.alert-success`, `.alert-warning`, `.alert-info`) with accent borders and slide-in animations.
 * **High-Impact Button System:** Cohesive, gradient-styled action buttons (`.btn-primary`, `.btn-success`, `.btn-danger`, `.btn-secondary`) with smooth elevation and hover states.
+* **Responsive Admin & Applicant Portals:** LGU and business pages adapt to phone, tablet, and desktop layouts, with mobile navigation and card-style table rows where appropriate.
 
-### 5. 🏢 Private Business Listing Lifecycle
-* **Spot Registration:** Business owners submit spot details (operating hours, contact numbers, price ranges, business permits, BIR numbers, and GPS coordinates).
+### 5. 🏢 Private & Public Sector Listing Lifecycle
+* **Spot Registration:** Private and public sector applicants submit spot details (operating hours, contact numbers, price ranges, business permits, BIR numbers, and GPS coordinates).
 * **Multi-Photo Uploads:** Supports up to 10 high-resolution images per listing.
 * **LGU Verification Dashboard:** Applications remain in `pending` status with highlighted decision controls (Approve / Reject with feedback).
+* **Applicant Dashboard:** Shows listing totals and approval progress, identifies the applicant sector, and provides responsive access to listing status and live pages.
 
 ### 6. 📋 Quality Monitoring & 3-Month Improvement Deadlines
 * **Compliance Oversight:** LGU monitors spots receiving negative feedback or facility issues.
 * **Automated 3-Month Deadlines:** Admin issues warning notices with an automated **3-month improvement countdown** (`deadline = NOW() + INTERVAL 3 MONTH`).
 * **Dynamic Notification Badges:** Header navigation badges illuminate in real-time when new monitoring notices or owner submissions occur.
 * **Renovation Update Verification:** Owners submit renovation descriptions and up to 10 proof photos for LGU re-inspection.
+* **Review Workflow:** LGU administrators can approve or decline improvement submissions with feedback; the mobile review dialog keeps its close control visible while scrolling.
+* **Status Overview:** Monitoring totals distinguish flagged, under-renovation, and improved listings using color-coded cards.
 
 ### 7. 🔐 Authentication & Role-Based Access Control
-* Role-specific workflows for **Tourists**, **Business Owners**, and **LGU Administrators**.
+* Role-specific workflows for **Tourists**, **Private/Public Sector Applicants**, and **LGU Administrators**, including tourist login and registration routes.
 * Secure password hashing (`PASSWORD_BCRYPT`) and OTP email reset codes dispatched via PHPMailer SMTP.
 
 ---
