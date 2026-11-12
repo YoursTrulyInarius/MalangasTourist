@@ -42,6 +42,8 @@
         .lgu-layout {
             display: flex;
             min-height: 100vh;
+            min-width: 0;
+            width: 100%;
         }
 
         /* ===== SIDEBAR ===== */
@@ -55,9 +57,11 @@
             top: 0;
             left: 0;
             height: 100vh;
+            height: 100dvh;
             z-index: 1200;
             overflow-y: auto;
-            transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            overscroll-behavior: contain;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .sidebar-brand {
@@ -209,6 +213,7 @@
             display: flex;
             flex-direction: column;
             min-height: 100vh;
+            min-width: 0;
         }
 
         /* Top bar inside content */
@@ -227,7 +232,19 @@
         .lgu-topbar-title { font-size: 1.1rem; font-weight: 700; color: var(--primary-dark); }
         .lgu-topbar-breadcrumb { font-size: 0.8rem; color: var(--text-muted); margin-top: 0.1rem; }
 
-        .lgu-page-body { padding: 2rem; flex: 1; }
+        .lgu-page-body { padding: 2rem; flex: 1; min-width: 0; }
+
+        .lgu-page-body > * { min-width: 0; max-width: 100%; }
+
+        .lgu-page-body [style*="grid-template-columns"] > * { min-width: 0; }
+
+        .lgu-page-body { overflow-wrap: anywhere; }
+
+        .lgu-page-body input,
+        .lgu-page-body select,
+        .lgu-page-body textarea {
+            max-width: 100%;
+        }
 
         .admin-sidebar-toggle {
             display: none;
@@ -256,6 +273,8 @@
             inset: 0;
             background: rgba(0,0,0,0.5);
             z-index: 1150;
+            border: 0;
+            padding: 0;
             backdrop-filter: blur(2px);
             -webkit-backdrop-filter: blur(2px);
         }
@@ -334,6 +353,12 @@
             overflow-x: auto;
             -webkit-overflow-scrolling: touch;
             width: 100%;
+            min-width: 0;
+            max-width: 100%;
+        }
+
+        .mobile-table-label {
+            display: none;
         }
 
         .admin-filter-form {
@@ -348,18 +373,28 @@
             box-shadow: 0 1px 4px rgba(0,0,0,0.07);
         }
 
+        .admin-grid-2col {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 1.5rem;
+        }
+
         /* ===== RESPONSIVE — TABLET & MOBILE ===== */
         @media (max-width: 900px) {
             .lgu-sidebar {
-                left: -260px;
+                width: min(280px, 85vw);
+                min-width: 0;
+                max-width: calc(100vw - 3rem);
+                transform: translateX(-100%);
             }
             body.sidebar-open .lgu-sidebar {
-                left: 0;
+                transform: translateX(0);
                 box-shadow: 4px 0 24px rgba(0,0,0,0.3);
             }
             .lgu-main {
                 margin-left: 0;
                 width: 100%;
+                max-width: 100%;
             }
             .admin-sidebar-toggle {
                 display: inline-flex !important;
@@ -394,6 +429,10 @@
         }
 
         @media (max-width: 768px) {
+            .admin-grid-2col {
+                grid-template-columns: minmax(0, 1fr);
+                gap: 1rem;
+            }
             .table-responsive table {
                 min-width: 580px;
             }
@@ -438,6 +477,84 @@
                 margin-left: 0;
                 text-align: right;
             }
+            .admin-filter-form,
+            .app-filter-bar {
+                min-width: 0;
+            }
+            .lgu-page-body .table-responsive {
+                overflow: visible;
+            }
+            .lgu-page-body .table-responsive table.mobile-table-cards {
+                display: block;
+                width: 100% !important;
+                min-width: 0 !important;
+                max-width: 100%;
+                border-collapse: separate !important;
+                border-spacing: 0;
+            }
+            .lgu-page-body .table-responsive table.mobile-table-cards thead {
+                position: absolute;
+                width: 1px;
+                height: 1px;
+                padding: 0;
+                margin: -1px;
+                overflow: hidden;
+                clip: rect(0, 0, 0, 0);
+                white-space: nowrap;
+                border: 0;
+            }
+            .lgu-page-body .table-responsive table.mobile-table-cards tbody {
+                display: block;
+            }
+            .lgu-page-body .table-responsive table.mobile-table-cards tbody tr {
+                display: block;
+                margin: 0 0 0.75rem;
+                overflow: hidden;
+                border: 1px solid #e5e7eb;
+                border-radius: 0.75rem;
+                background: #fff;
+                box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+            }
+            .lgu-page-body .table-responsive table.mobile-table-cards tbody tr:last-child {
+                margin-bottom: 0;
+            }
+            .lgu-page-body .table-responsive table.mobile-table-cards tbody td {
+                display: grid;
+                grid-template-columns: minmax(5.5rem, 34%) minmax(0, 1fr);
+                align-items: start;
+                gap: 0.75rem;
+                min-width: 0;
+                padding: 0.75rem 0.85rem !important;
+                border-bottom: 1px solid #eef0f2;
+                text-align: left !important;
+                overflow-wrap: anywhere;
+                word-break: normal;
+                white-space: normal !important;
+            }
+            .lgu-page-body .table-responsive table.mobile-table-cards .mobile-table-label {
+                display: block;
+                color: var(--text-muted);
+                font-size: 0.68rem;
+                font-weight: 700;
+                letter-spacing: 0.04em;
+                line-height: 1.4;
+                text-transform: uppercase;
+            }
+            .lgu-page-body .table-responsive table.mobile-table-cards tbody td:last-child {
+                border-bottom: 0;
+            }
+            .lgu-page-body .table-responsive table.mobile-table-cards tbody td[colspan] {
+                display: block;
+                text-align: center !important;
+            }
+            .lgu-page-body .table-responsive table.mobile-table-cards tbody td[colspan]::before {
+                content: none;
+            }
+            .monitor-table .quick-review-grid,
+            .monitor-table .quick-review-grid > * {
+                min-width: 0;
+                max-width: 100%;
+            }
         }
 
         @media (max-width: 600px) {
@@ -451,9 +568,42 @@
                 display: flex;
                 gap: 0.5rem;
                 justify-content: flex-start;
+                flex-wrap: wrap;
+            }
+            .lgu-topbar > *:not(.admin-sidebar-toggle):not(:first-of-type) > * {
+                min-width: 0;
+                max-width: 100%;
             }
             .lgu-page-body {
                 padding: 0.85rem;
+            }
+            .lgu-sidebar {
+                max-width: calc(100vw - 2.5rem);
+            }
+
+            .detail-modal-backdrop {
+                padding: 0.5rem;
+            }
+
+            .detail-modal,
+            .detail-modal-body,
+            .detail-modal-header {
+                min-width: 0;
+            }
+
+            .lgu-page-body form > * {
+                min-width: 0;
+            }
+
+            .lgu-page-body .btn {
+                max-width: 100%;
+                white-space: normal;
+            }
+
+            .lgu-page-body form[style*="padding: 2rem;"] > div[style*="border-top"],
+            .lgu-page-body form[style*="padding:2rem;"] > div[style*="border-top"] {
+                flex-direction: column;
+                align-items: stretch;
             }
 
             /* Compact horizontal stat cards on phone screen */
@@ -510,22 +660,44 @@
         document.addEventListener('DOMContentLoaded', function() {
             var topbar = document.querySelector('.lgu-topbar');
             var body = document.body;
+            var sidebar = document.querySelector('.lgu-sidebar');
+            var toggleBtn = null;
+
+            function syncSidebarState(isOpen) {
+                body.classList.toggle('sidebar-open', isOpen);
+                if (toggleBtn) {
+                    toggleBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+                    toggleBtn.setAttribute('aria-label', isOpen ? 'Close navigation menu' : 'Open navigation menu');
+                    var icon = document.getElementById('lgu-toggle-icon');
+                    if (icon) {
+                        icon.className = isOpen ? 'fa-solid fa-xmark' : 'fa-solid fa-bars';
+                    }
+                }
+                if (sidebar) {
+                    var isHidden = window.innerWidth <= 900 && !isOpen;
+                    sidebar.setAttribute('aria-hidden', isHidden ? 'true' : 'false');
+                    sidebar.inert = isHidden;
+                }
+            }
 
             // Inject hamburger toggle button into topbar
             if (topbar) {
-                var toggleBtn = document.createElement('button');
+                toggleBtn = document.createElement('button');
                 toggleBtn.type = 'button';
                 toggleBtn.className = 'admin-sidebar-toggle';
                 toggleBtn.innerHTML = '<i class="fa-solid fa-bars" id="lgu-toggle-icon"></i>';
-                toggleBtn.setAttribute('aria-label', 'Toggle sidebar');
+                toggleBtn.setAttribute('aria-label', 'Open navigation menu');
+                toggleBtn.setAttribute('aria-controls', 'lgu-sidebar');
+                toggleBtn.setAttribute('aria-expanded', 'false');
                 topbar.insertBefore(toggleBtn, topbar.firstChild);
 
                 toggleBtn.addEventListener('click', function(e) {
                     e.stopPropagation();
-                    var isOpen = body.classList.toggle('sidebar-open');
-                    var icon = document.getElementById('lgu-toggle-icon');
-                    if (icon) {
-                        icon.className = isOpen ? 'fa-solid fa-xmark' : 'fa-solid fa-bars';
+                    var isOpen = !body.classList.contains('sidebar-open');
+                    syncSidebarState(isOpen);
+                    if (isOpen && sidebar) {
+                        var firstLink = sidebar.querySelector('.sidebar-link');
+                        if (firstLink) firstLink.focus();
                     }
                 });
             }
@@ -533,36 +705,74 @@
             // Inject backdrop overlay
             var layout = document.querySelector('.lgu-layout');
             if (layout) {
-                var backdrop = document.createElement('div');
+                var backdrop = document.createElement('button');
+                backdrop.type = 'button';
                 backdrop.className = 'admin-sidebar-backdrop';
+                backdrop.setAttribute('aria-label', 'Close navigation menu');
+                backdrop.setAttribute('tabindex', '-1');
                 layout.appendChild(backdrop);
                 backdrop.addEventListener('click', function() {
-                    body.classList.remove('sidebar-open');
-                    var icon = document.getElementById('lgu-toggle-icon');
-                    if (icon) icon.className = 'fa-solid fa-bars';
+                    syncSidebarState(false);
+                    if (toggleBtn) toggleBtn.focus();
                 });
             }
 
             // Close sidebar when window resized above mobile breakpoint
             window.addEventListener('resize', function() {
                 if (window.innerWidth > 900) {
-                    body.classList.remove('sidebar-open');
-                    var icon = document.getElementById('lgu-toggle-icon');
-                    if (icon) icon.className = 'fa-solid fa-bars';
+                    syncSidebarState(false);
+                } else if (sidebar) {
+                    var isHidden = !body.classList.contains('sidebar-open');
+                    sidebar.setAttribute('aria-hidden', isHidden ? 'true' : 'false');
+                    sidebar.inert = isHidden;
                 }
             });
 
             // Close sidebar on Escape key
             document.addEventListener('keydown', function(e) {
                 if (e.key === 'Escape' && body.classList.contains('sidebar-open')) {
-                    body.classList.remove('sidebar-open');
-                    var icon = document.getElementById('lgu-toggle-icon');
-                    if (icon) icon.className = 'fa-solid fa-bars';
+                    syncSidebarState(false);
+                    if (toggleBtn) toggleBtn.focus();
+                    return;
+                }
+
+                if (e.key === 'Tab' && body.classList.contains('sidebar-open') && sidebar && toggleBtn) {
+                    var drawerFocusables = Array.prototype.slice.call(sidebar.querySelectorAll(
+                        'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+                    ));
+                    drawerFocusables.push(toggleBtn);
+                    var firstFocusable = drawerFocusables[0];
+                    var lastFocusable = drawerFocusables[drawerFocusables.length - 1];
+                    if (e.shiftKey && document.activeElement === firstFocusable) {
+                        e.preventDefault();
+                        lastFocusable.focus();
+                    } else if (!e.shiftKey && document.activeElement === lastFocusable) {
+                        e.preventDefault();
+                        firstFocusable.focus();
+                    }
                 }
             });
 
             // Auto-wrap all tables in scrollable containers
             document.querySelectorAll('table').forEach(function(table) {
+                var headerCells = table.querySelectorAll('thead th');
+                if (headerCells.length) {
+                    table.classList.add('mobile-table-cards');
+                    var labels = Array.prototype.map.call(headerCells, function(cell) {
+                        return cell.textContent.replace(/\s+/g, ' ').trim();
+                    });
+                    Array.prototype.forEach.call(table.querySelectorAll('tbody tr'), function(row) {
+                        Array.prototype.forEach.call(row.cells, function(cell, index) {
+                            if (!cell.hasAttribute('colspan') && labels[index]) {
+                                cell.setAttribute('data-label', labels[index]);
+                                var label = document.createElement('span');
+                                label.className = 'mobile-table-label';
+                                label.textContent = labels[index];
+                                cell.insertBefore(label, cell.firstChild);
+                            }
+                        });
+                    });
+                }
                 if (!table.parentElement.classList.contains('table-responsive')) {
                     var wrapper = document.createElement('div');
                     wrapper.className = 'table-responsive';
@@ -575,12 +785,16 @@
             document.querySelectorAll('.lgu-sidebar .sidebar-link, .lgu-sidebar .sidebar-brand').forEach(function(el) {
                 el.addEventListener('click', function() {
                     if (window.innerWidth <= 900) {
-                        body.classList.remove('sidebar-open');
-                        var icon = document.getElementById('lgu-toggle-icon');
-                        if (icon) icon.className = 'fa-solid fa-bars';
+                        syncSidebarState(false);
                     }
                 });
             });
+
+            if (sidebar) {
+                sidebar.id = 'lgu-sidebar';
+                sidebar.setAttribute('aria-label', 'LGU administration');
+            }
+            syncSidebarState(false);
         });
     </script>
 </head>
@@ -588,7 +802,7 @@
 <div class="lgu-layout">
 
     <!-- Sidebar -->
-    <aside class="lgu-sidebar">
+    <aside class="lgu-sidebar" id="lgu-sidebar" aria-label="LGU administration">
         <!-- Brand -->
         <a href="<?= BASE_URL ?>/" class="sidebar-brand">
             <?php if (file_exists(__DIR__ . '/../../../public/assets/images/logo.png')): ?>

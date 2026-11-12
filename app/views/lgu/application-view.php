@@ -3,6 +3,30 @@ $title = 'Review Application - LGU Admin';
 $activePage = 'applications';
 require_once '../app/views/partials/lgu-header.php';
 ?>
+<style>
+@media (max-width: 768px) {
+    .lgu-page-body .application-info-table {
+        display: block;
+        width: 100%;
+        min-width: 0;
+        table-layout: fixed;
+    }
+    .lgu-page-body .application-info-table tbody {
+        display: block;
+    }
+    .lgu-page-body .application-info-table tr {
+        display: grid;
+        grid-template-columns: minmax(5.5rem, 40%) minmax(0, 1fr);
+        column-gap: 0.75rem;
+        width: 100%;
+    }
+    .lgu-page-body .application-info-table td {
+        width: auto !important;
+        min-width: 0;
+        overflow-wrap: anywhere;
+    }
+}
+</style>
 
 <!-- Top Bar -->
 <div class="lgu-topbar">
@@ -49,7 +73,7 @@ require_once '../app/views/partials/lgu-header.php';
         <!-- Details -->
         <div style="background: white; border-radius: 0.75rem; box-shadow: 0 1px 4px rgba(0,0,0,0.07); padding: 1.5rem 2rem;">
             <div style="font-weight: 700; font-size: 0.95rem; color: var(--primary-dark); margin-bottom: 1.25rem; padding-bottom: 0.75rem; border-bottom: 1px solid #f0f0f0;">Application Details</div>
-            <table style="width: 100%; border-collapse: collapse;">
+            <table class="application-info-table" style="width: 100%; border-collapse: collapse;">
                 <?php
                     $details = [
                         ['Category',       htmlspecialchars($application['category_name'])],
@@ -85,7 +109,7 @@ require_once '../app/views/partials/lgu-header.php';
         <!-- Documents Verification -->
         <div style="background: white; border-radius: 0.75rem; box-shadow: 0 1px 4px rgba(0,0,0,0.07); padding: 1.5rem 2rem; margin-bottom: 1.5rem;">
             <div style="font-weight: 700; font-size: 0.95rem; color: var(--primary-dark); margin-bottom: 1.25rem; padding-bottom: 0.75rem; border-bottom: 1px solid #f0f0f0;"><i class="fa-solid fa-file-contract"></i> Submitted Documents & Clearances</div>
-            <table style="width: 100%; border-collapse: collapse;">
+            <table class="application-info-table" style="width: 100%; border-collapse: collapse;">
                 <tr style="border-bottom: 1px solid #f5f5f5;">
                     <td style="padding: 0.6rem 0; font-size: 0.82rem; font-weight: 600; color: var(--text-muted); width: 40%;">B.I.R. Registration No.</td>
                     <td style="padding: 0.6rem 0; font-size: 0.88rem; color: var(--primary-dark); font-weight: 600; font-family: monospace;"><?= htmlspecialchars($application['bir_number'] ?: 'Not Provided') ?></td>

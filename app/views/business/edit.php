@@ -28,13 +28,13 @@ require_once '../app/views/partials/business-header.php';
         </div>
     <?php endif; ?>
 
-    <div style="max-width:820px;margin:0 auto;background:white;border-radius:0.75rem;box-shadow:0 2px 8px rgba(0,0,0,0.08);overflow:hidden;">
-        <div style="padding:1.5rem 2rem;border-bottom:1px solid #f0f0f0;background:#f8f9fb;">
+    <div class="biz-form-panel" style="max-width:820px;margin:0 auto;background:white;border-radius:0.75rem;box-shadow:0 2px 8px rgba(0,0,0,0.08);overflow:hidden;">
+        <div class="biz-form-panel-header" style="padding:1.5rem 2rem;border-bottom:1px solid #f0f0f0;background:#f8f9fb;">
             <div style="font-weight:700;font-size:1rem;color:var(--primary-dark);">Update Information</div>
             <div style="font-size:0.8rem;color:var(--text-muted);">Changing the map location pin will reset your listing to <strong>pending</strong> review.</div>
         </div>
 
-        <form action="<?= BASE_URL ?>/business/edit/save" method="POST" enctype="multipart/form-data" style="padding:2rem;">
+        <form class="biz-form-content" action="<?= BASE_URL ?>/business/edit/save" method="POST" enctype="multipart/form-data" style="padding:2rem;">
             <input type="hidden" name="spot_id" value="<?= $spot['id'] ?>">
 
             <?php if ($pendingPhotoUpdate): ?>
@@ -76,7 +76,7 @@ require_once '../app/views/partials/business-header.php';
                 <textarea name="description" class="form-control" rows="4"><?= htmlspecialchars($spot['description'] ?? '') ?></textarea>
             </div>
 
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin-bottom:1.25rem;">
+            <div class="biz-edit-grid" style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1.25rem;margin-bottom:1.25rem;">
                 <div>
                     <label class="input-label">Barangay</label>
                     <select id="barangay" name="barangay" class="form-control">
@@ -97,7 +97,7 @@ require_once '../app/views/partials/business-header.php';
                 </div>
             </div>
 
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin-bottom:1.25rem;">
+            <div class="biz-edit-grid" style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1.25rem;margin-bottom:1.25rem;">
                 <div>
                     <label class="input-label">Operating Hours</label>
                     <input type="text" name="hours" class="form-control" value="<?= htmlspecialchars($spot['hours'] ?? '') ?>" placeholder="e.g. 8AM – 5PM">
@@ -142,7 +142,7 @@ require_once '../app/views/partials/business-header.php';
                 </div>
             </div>
 
-            <div style="margin-top:2rem;padding-top:1.5rem;border-top:1px solid #f0f0f0;display:flex;gap:1rem;">
+            <div class="biz-form-actions" style="margin-top:2rem;padding-top:1.5rem;border-top:1px solid #f0f0f0;display:flex;gap:1rem;">
                 <button type="submit" class="btn btn-primary" style="padding:0.85rem 2.5rem;font-size:1rem;font-weight:700;">
                     <i class="fa-solid fa-floppy-disk"></i> Save Changes
                 </button>

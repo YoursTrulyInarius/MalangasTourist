@@ -94,11 +94,12 @@ require_once '../app/views/partials/header.php';
 }
 .code-input-group {
     display: grid;
-    grid-template-columns: repeat(6, minmax(3rem, 1fr));
-    gap: 0.75rem;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 0.5rem;
 }
 .code-digit {
     width: 100%;
+    min-width: 0;
     height: 4rem;
     border: 2px solid #bae6fd;
     border-radius: 0.9rem;
@@ -197,6 +198,64 @@ require_once '../app/views/partials/header.php';
     }
     .auth-form-box h3 {
         font-size: 1.5rem;
+    }
+}
+
+.auth-page,
+.auth-page * {
+    box-sizing: border-box;
+}
+
+.auth-page {
+    overflow: visible;
+}
+
+.auth-right,
+.auth-form-box,
+.code-input-group {
+    min-width: 0;
+}
+
+@media (max-width: 480px) {
+    .auth-page {
+        align-items: flex-start;
+        padding: 1rem 0.75rem;
+    }
+
+    .auth-right {
+        width: 100%;
+    }
+
+    .auth-form-box {
+        max-width: 100%;
+        padding: 1.5rem 1rem;
+        border-radius: 1rem;
+    }
+
+    .auth-form-header {
+        gap: 0.75rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .auth-form-header-logo {
+        width: 60px;
+        height: 60px;
+        flex: 0 0 60px;
+    }
+
+    .code-input-group {
+        gap: 0.35rem;
+    }
+
+    .code-digit {
+        height: 3.5rem;
+        padding: 0.25rem;
+        font-size: clamp(1.2rem, 6vw, 1.6rem);
+    }
+
+    .auth-form-box .form-control {
+        min-width: 0;
+        font-size: 16px;
     }
 }
 </style>

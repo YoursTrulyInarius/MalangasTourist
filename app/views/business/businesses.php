@@ -4,6 +4,83 @@ $activePage = 'businesses';
 require_once '../app/views/partials/business-header.php';
 ?>
 
+<style>
+    @media (max-width: 700px) {
+        .biz-business-card-header {
+            align-items: flex-start !important;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .biz-business-card-header > a {
+            width: 100%;
+            justify-content: center;
+        }
+
+        .biz-business-table-wrap {
+            overflow: visible !important;
+            padding: 0.75rem;
+        }
+
+        .biz-business-table-wrap .table-responsive {
+            overflow: visible;
+        }
+
+        .biz-business-table-wrap .table-responsive > table {
+            display: block;
+            min-width: 0 !important;
+        }
+
+        .biz-business-table-wrap thead {
+            display: none;
+        }
+
+        .biz-business-table-wrap tbody {
+            display: grid;
+            gap: 0.75rem;
+        }
+
+        .biz-business-table-wrap tbody tr {
+            display: block;
+            overflow: hidden;
+            background: #fff;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.75rem;
+            box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+        }
+
+        .biz-business-table-wrap tbody td {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 0.75rem;
+            padding: 0.7rem 0.85rem !important;
+            border-bottom: 1px solid #f1f3f5;
+            text-align: right;
+            overflow-wrap: anywhere;
+        }
+
+        .biz-business-table-wrap tbody td::before {
+            content: attr(data-label);
+            flex: 0 0 36%;
+            color: var(--text-muted);
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            text-align: left;
+            text-transform: uppercase;
+        }
+
+        .biz-business-table-wrap tbody td:last-child {
+            border-bottom: 0;
+        }
+
+        .biz-business-table-wrap tbody td:last-child > a {
+            margin-left: auto;
+        }
+    }
+</style>
+
 <!-- Top Bar -->
 <div class="biz-topbar">
     <div>
@@ -17,7 +94,7 @@ require_once '../app/views/partials/business-header.php';
 
 <div class="biz-page-body">
     <div style="background: white; border-radius: 0.75rem; box-shadow: 0 1px 4px rgba(0,0,0,0.07); overflow: hidden;">
-        <div style="padding: 1.25rem 1.5rem; border-bottom: 1px solid #f0f0f0; display: flex; justify-content: space-between; align-items: center;">
+        <div class="biz-business-card-header" style="padding: 1.25rem 1.5rem; border-bottom: 1px solid #f0f0f0; display: flex; justify-content: space-between; align-items: center;">
             <div>
                 <div style="font-weight: 700; font-size: 1rem; color: var(--primary-dark);">Your Businesses</div>
                 <div style="font-size: 0.8rem; color: var(--text-muted);">Manage every business listing you own</div>
@@ -36,7 +113,7 @@ require_once '../app/views/partials/business-header.php';
                 </a>
             </div>
         <?php else: ?>
-            <div style="overflow-x: auto;">
+            <div class="biz-business-table-wrap" style="overflow-x: auto;">
                 <table style="width: 100%; border-collapse: collapse; text-align: left;">
                     <thead>
                         <tr style="background: #f8f9fb; border-bottom: 2px solid #e5e7eb;">
@@ -52,15 +129,15 @@ require_once '../app/views/partials/business-header.php';
                     <tbody>
                         <?php foreach ($spots as $spot): ?>
                         <tr style="border-bottom: 1px solid #f0f0f0; transition: background 0.1s;">
-                            <td style="padding: 1rem 1.25rem;">
+                            <td data-label="Business Name" style="padding: 1rem 1.25rem;">
                                 <strong style="color: var(--primary-dark);"><?= htmlspecialchars($spot['name']) ?></strong>
                                 <?php if ($spot['status'] === 'approved'): ?>
                                     <br><a href="<?= BASE_URL ?>/spot/<?= $spot['id'] ?>" target="_blank" style="font-size: 0.8rem; color: var(--secondary-color);"><i class="fa-solid fa-arrow-up-right-from-square"></i> View Live</a>
                                 <?php endif; ?>
                             </td>
-                            <td style="padding: 1rem 1.25rem; color: var(--text-main); font-size: 0.9rem;"><?= htmlspecialchars($spot['category_name']) ?></td>
-                            <td style="padding: 1rem 1.25rem; color: var(--text-muted); font-size: 0.9rem;"><?= date('M d, Y', strtotime($spot['created_at'])) ?></td>
-                            <td style="padding: 1rem 1.25rem;">
+                            <td data-label="Category" style="padding: 1rem 1.25rem; color: var(--text-main); font-size: 0.9rem;"><?= htmlspecialchars($spot['category_name']) ?></td>
+                            <td data-label="Submitted" style="padding: 1rem 1.25rem; color: var(--text-muted); font-size: 0.9rem;"><?= date('M d, Y', strtotime($spot['created_at'])) ?></td>
+                            <td data-label="Status" style="padding: 1rem 1.25rem;">
                                 <?php
                                     $statusMap = [
                                         'pending'        => ['bg' => '#fef3c7', 'txt' => '#92400e', 'label' => 'Pending'],
@@ -75,21 +152,21 @@ require_once '../app/views/partials/business-header.php';
                                     <br><span style="display:inline-block;margin-top:0.35rem;background:#fef3c7;color:#92400e;padding:0.2rem 0.55rem;border-radius:999px;font-size:0.72rem;font-weight:700;"><i class="fa-regular fa-images"></i> Photo Update Pending</span>
                                 <?php endif; ?>
                             </td>
-                            <td style="padding: 1rem 1.25rem;">
+                            <td data-label="Open / Closed" style="padding: 1rem 1.25rem;">
                                 <?php
                                     $opLabels = ['open' => ['label'=>'Open','bg'=>'#dcfce7','txt'=>'#166534'], 'closed' => ['label'=>'Closed','bg'=>'#fee2e2','txt'=>'#991b1b'], 'temp_closed' => ['label'=>'Temp. Closed','bg'=>'#fef3c7','txt'=>'#92400e'], 'maintenance' => ['label'=>'Maintenance','bg'=>'#dbeafe','txt'=>'#1e40af']];
                                     $opStyle = $opLabels[$spot['operational_status'] ?? 'open'] ?? ['label'=>'Open','bg'=>'#dcfce7','txt'=>'#166534'];
                                 ?>
                                 <span style="background:<?= $opStyle['bg'] ?>;color:<?= $opStyle['txt'] ?>;padding:0.2rem 0.65rem;border-radius:999px;font-size:0.8rem;font-weight:700;"><?= $opStyle['label'] ?></span>
                             </td>
-                            <td style="padding: 1rem 1.25rem;">
+                            <td data-label="LGU Comment" style="padding: 1rem 1.25rem;">
                                 <?php if (!empty($spot['rejection_reason'])): ?>
                                     <span style="color: #ef4444; font-size: 0.85rem;"><?= htmlspecialchars($spot['rejection_reason']) ?></span>
                                 <?php else: ?>
                                     <span style="color: var(--text-muted);">—</span>
                                 <?php endif; ?>
                             </td>
-                            <td style="padding: 1rem 1.25rem;">
+                            <td data-label="Actions" style="padding: 1rem 1.25rem;">
                                 <a href="<?= BASE_URL ?>/business/edit/<?= $spot['id'] ?>" style="padding:0.4rem 0.85rem;font-size:0.82rem;border-radius:0.4rem;background:var(--primary-color);color:white;text-decoration:none;font-weight:600;display:inline-flex;align-items:center;gap:0.35rem;">
                                     <i class="fa-solid fa-pen-to-square"></i> Manage
                                 </a>

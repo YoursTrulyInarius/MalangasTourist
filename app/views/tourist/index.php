@@ -361,6 +361,36 @@
         margin-left: 0;
     }
 }
+
+@media (max-width: 640px) {
+    .spots-grid-container {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .modern-spot-card,
+    .spot-card-body {
+        min-width: 0;
+    }
+
+    .spot-card-title,
+    .spot-card-location,
+    .spot-card-desc {
+        overflow-wrap: anywhere;
+    }
+
+    .spot-media-overlay > * {
+        min-width: 0;
+        max-width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .directory-search-bar,
+    .search-input-wrap,
+    .category-select-wrap {
+        min-width: 0;
+    }
+}
 </style>
 
 <script>

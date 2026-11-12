@@ -219,6 +219,54 @@ require_once '../app/views/partials/header.php';
         font-size: 1.5rem;
     }
 }
+
+.auth-page,
+.auth-page * {
+    box-sizing: border-box;
+}
+
+.auth-page {
+    overflow: visible;
+}
+
+.auth-right,
+.auth-form-box,
+.auth-form-box .form-group {
+    min-width: 0;
+}
+
+@media (max-width: 480px) {
+    .auth-page {
+        align-items: flex-start;
+        padding: 1rem 0.75rem;
+    }
+
+    .auth-right {
+        width: 100%;
+    }
+
+    .auth-form-box {
+        max-width: 100%;
+        padding: 1.5rem 1rem;
+        border-radius: 1rem;
+    }
+
+    .auth-form-header {
+        gap: 0.75rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .auth-form-header-logo {
+        width: 60px;
+        height: 60px;
+        flex: 0 0 60px;
+    }
+
+    .auth-form-box .form-control {
+        min-width: 0;
+        font-size: 16px;
+    }
+}
 </style>
 
 <div class="auth-page">

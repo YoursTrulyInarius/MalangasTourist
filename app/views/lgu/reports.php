@@ -4,6 +4,27 @@ $activePage = 'reports';
 require_once '../app/views/partials/lgu-header.php';
 ?>
 <style>
+.top-rated-table-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
+}
+.top-rated-table-wrap .top-rated-table {
+    min-width: 760px;
+}
+.top-rated-table th,
+.top-rated-table td {
+    overflow-wrap: normal;
+    word-break: normal;
+}
+.top-rated-table th {
+    white-space: nowrap;
+}
+@media (max-width: 640px) {
+    .mobile-table-cards td > .report-table-value {
+        grid-column: 2;
+    }
+}
 @media print {
     .lgu-sidebar, .lgu-topbar, .no-print { display: none !important; }
     .lgu-main { margin-left: 0 !important; }
@@ -80,8 +101,7 @@ require_once '../app/views/partials/lgu-header.php';
                     <?php foreach ($report['by_category'] as $cat): ?>
                     <tr style="border-bottom:1px solid #f3f4f6;">
                         <td style="padding:0.75rem 1.25rem;font-size:0.88rem;color:var(--primary-dark);font-weight:600;">
-                            <i class="fa-solid <?= htmlspecialchars($cat['icon']) ?>"></i>
-                            <?= htmlspecialchars($cat['name']) ?>
+                            <span class="report-table-value"><i class="fa-solid <?= htmlspecialchars($cat['icon']) ?>"></i> <?= htmlspecialchars($cat['name']) ?></span>
                         </td>
                         <td style="padding:0.75rem 1rem;text-align:center;font-weight:700;color:var(--primary-dark);"><?= $cat['total'] ?></td>
                         <td style="padding:0.75rem 1rem;text-align:center;color:#16a34a;font-weight:600;"><?= $cat['approved'] ?></td>
@@ -132,7 +152,8 @@ require_once '../app/views/partials/lgu-header.php';
         <?php if (empty($report['top_rated'])): ?>
             <div style="padding:3rem;text-align:center;color:var(--text-muted);">No approved spots with reviews yet.</div>
         <?php else: ?>
-        <table style="width:100%;border-collapse:collapse;">
+        <div class="table-responsive top-rated-table-wrap">
+        <table class="top-rated-table" style="width:100%;border-collapse:collapse;">
             <thead>
                 <tr style="background:#f8f9fb;border-bottom:1px solid #e5e7eb;">
                     <th style="padding:0.65rem 1.25rem;font-size:0.78rem;text-transform:uppercase;color:var(--text-muted);font-weight:700;text-align:left;">#</th>
@@ -164,6 +185,7 @@ require_once '../app/views/partials/lgu-header.php';
                 <?php endforeach; ?>
             </tbody>
         </table>
+        </div>
         <?php endif; ?>
     </div>
 

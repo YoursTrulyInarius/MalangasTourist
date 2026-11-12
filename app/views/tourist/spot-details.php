@@ -1142,6 +1142,69 @@ require_once '../app/views/partials/header.php';
     .auth-modal-header { padding: 1.25rem 1.25rem 1rem; }
     .auth-modal-body { padding: 1rem 1.25rem 1.25rem; }
 }
+
+@media (max-width: 640px) {
+    .spot-detail-wrap,
+    .spot-body,
+    .spot-title-row > div,
+    .spot-info-grid,
+    .info-card,
+    .review-form-box,
+    .review-card-content {
+        min-width: 0;
+    }
+
+    .spot-name,
+    .info-card-value,
+    .spot-map-address,
+    .spot-trip-point strong,
+    .review-text {
+        overflow-wrap: anywhere;
+    }
+
+    .spot-info-grid {
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 150px), 1fr));
+    }
+
+    .spot-directions-button,
+    .spot-nearby-refresh,
+    .carousel-btn,
+    .spot-live-toggle,
+    .review-submit-btn {
+        min-height: 44px;
+    }
+
+    .spot-directions-button {
+        padding-inline: 0.65rem;
+    }
+
+    .spot-route-card {
+        min-height: 64px;
+    }
+
+    .review-file-input {
+        min-width: 0;
+        font-size: 0.85rem;
+    }
+}
+
+@media (max-width: 400px) {
+    .spot-title-row {
+        gap: 0.5rem;
+    }
+
+    .spot-name {
+        font-size: 1.35rem;
+    }
+
+    .spot-body {
+        padding-inline: 0.75rem;
+    }
+
+    .review-form-box {
+        padding: 0.9rem;
+    }
+}
 </style>
 
 <div style="padding-top: <?= $is_modal ? '0' : '2rem' ?>; padding-bottom: <?= $is_modal ? '0' : '4rem' ?>;">

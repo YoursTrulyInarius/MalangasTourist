@@ -41,6 +41,7 @@
         .biz-layout {
             display: flex;
             min-height: 100vh;
+            width: 100%;
         }
 
         /* ===== SIDEBAR ===== */
@@ -208,6 +209,7 @@
             display: flex;
             flex-direction: column;
             min-height: 100vh;
+            min-width: 0;
         }
 
         /* Top bar inside content */
@@ -228,25 +230,69 @@
 
         .biz-page-body { padding: 2rem; flex: 1; }
 
+        .biz-main,
+        .biz-page-body,
+        .biz-main > * { min-width: 0; }
+
+        .biz-main { overflow-wrap: anywhere; }
+
+        .biz-main img,
+        .biz-main input,
+        .biz-main select,
+        .biz-main textarea { max-width: 100%; }
+
+        .biz-main #map-picker { box-sizing: border-box; }
+
+        .biz-main input,
+        .biz-main select,
+        .biz-main textarea { box-sizing: border-box; }
+
+        .biz-main .table-responsive {
+            max-width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .biz-main .table-responsive > table { min-width: 700px; }
+        .biz-main .admin-sidebar-backdrop {
+            padding: 0;
+            border: 0;
+            appearance: none;
+            cursor: pointer;
+            touch-action: none;
+        }
+
         /* ===== RESPONSIVE — MOBILE ===== */
         @media (max-width: 900px) {
             .biz-sidebar {
-                left: -260px;
+                left: 0;
+                width: min(86vw, 320px);
+                min-width: 0;
+                transform: translateX(-100%);
+                transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                z-index: 1202;
             }
             body.sidebar-open .biz-sidebar {
-                left: 0;
+                transform: translateX(0);
                 box-shadow: 4px 0 20px rgba(0,0,0,0.25);
             }
+            body.sidebar-open { overflow: hidden; }
             .biz-main {
                 margin-left: 0;
                 width: 100%;
             }
             .admin-sidebar-toggle {
                 display: inline-flex !important;
+                flex: 0 0 auto;
             }
             .biz-page-body {
                 padding: 1.25rem;
             }
+            .biz-topbar > div {
+                min-width: 0;
+                flex: 1 1 0;
+            }
+            .biz-topbar .biz-topbar-breadcrumb { overflow-wrap: anywhere; }
         }
 
         @media (max-width: 600px) {
@@ -255,9 +301,39 @@
                 flex-wrap: wrap;
                 gap: 0.5rem;
             }
+            .biz-topbar > div { flex-basis: calc(100% - 3rem); }
+            .biz-topbar > a,
+            .biz-topbar > .btn {
+                max-width: 100%;
+                white-space: normal;
+                overflow-wrap: anywhere;
+            }
             .biz-page-body {
                 padding: 1rem;
             }
+            .biz-main .biz-form-content { padding: 1rem !important; }
+            .biz-main .biz-form-panel-header { padding: 1rem !important; }
+            .biz-main .biz-form-grid,
+            .biz-main .biz-edit-grid {
+                grid-template-columns: minmax(0, 1fr) !important;
+            }
+            .biz-main .biz-form-grid > *,
+            .biz-main .biz-edit-grid > * { min-width: 0; }
+            .biz-main .biz-form-panel { width: 100%; }
+            .biz-main .biz-form-actions { flex-direction: column; }
+            .biz-main .biz-form-actions > * {
+                width: 100%;
+                justify-content: center;
+            }
+            .biz-main .table-responsive > table th,
+            .biz-main .table-responsive > table td {
+                white-space: normal;
+                overflow-wrap: anywhere;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .biz-sidebar { transition: none; }
         }
     </style>
     <script>
@@ -271,49 +347,84 @@
                 toggleBtn.type = 'button';
                 toggleBtn.className = 'admin-sidebar-toggle';
                 toggleBtn.innerHTML = '<i class="fa-solid fa-bars" id="biz-toggle-icon"></i>';
-                toggleBtn.setAttribute('aria-label', 'Toggle sidebar');
+                toggleBtn.setAttribute('aria-label', 'Open navigation menu');
+                toggleBtn.setAttribute('aria-controls', 'biz-sidebar');
+                toggleBtn.setAttribute('aria-expanded', 'false');
                 topbar.insertBefore(toggleBtn, topbar.firstChild);
+
+                var sidebar = document.querySelector('.biz-sidebar');
+                var backdrop;
+                var originalBodyOverflow = body.style.overflow;
+                function setSidebarOpen(isOpen) {
+                    body.classList.toggle('sidebar-open', isOpen);
+                    toggleBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+                    toggleBtn.setAttribute('aria-label', isOpen ? 'Close navigation menu' : 'Open navigation menu');
+                    var icon = document.getElementById('biz-toggle-icon');
+                    if (icon) icon.className = isOpen ? 'fa-solid fa-xmark' : 'fa-solid fa-bars';
+                    body.style.overflow = isOpen ? 'hidden' : originalBodyOverflow;
+                    if (backdrop) backdrop.setAttribute('aria-hidden', isOpen ? 'false' : 'true');
+                    if (sidebar) {
+                        var sidebarHidden = !isOpen && window.innerWidth <= 900;
+                        sidebar.setAttribute('aria-hidden', sidebarHidden ? 'true' : 'false');
+                        sidebar.inert = sidebarHidden;
+                    }
+                    if (isOpen && sidebar) {
+                        var firstLink = sidebar.querySelector('a');
+                        if (firstLink) firstLink.focus();
+                    } else if (!isOpen && window.innerWidth <= 900 && document.activeElement !== toggleBtn) {
+                        toggleBtn.focus();
+                    }
+                }
 
                 toggleBtn.addEventListener('click', function(e) {
                     e.stopPropagation();
-                    var isOpen = body.classList.toggle('sidebar-open');
-                    var icon = document.getElementById('biz-toggle-icon');
-                    if (icon) {
-                        icon.className = isOpen ? 'fa-solid fa-xmark' : 'fa-solid fa-bars';
+                    setSidebarOpen(!body.classList.contains('sidebar-open'));
+                });
+
+                var layout = document.querySelector('.biz-layout');
+                if (layout) {
+                    backdrop = document.createElement('button');
+                    backdrop.type = 'button';
+                    backdrop.className = 'admin-sidebar-backdrop';
+                    backdrop.setAttribute('aria-label', 'Close navigation menu');
+                    backdrop.setAttribute('aria-hidden', 'true');
+                    layout.appendChild(backdrop);
+                }
+                if (backdrop) {
+                    backdrop.addEventListener('click', function() {
+                        setSidebarOpen(false);
+                    });
+                }
+
+                if (sidebar) {
+                    sidebar.id = 'biz-sidebar';
+                    sidebar.setAttribute('aria-label', 'Business panel navigation');
+                    var sidebarHidden = window.innerWidth <= 900;
+                    sidebar.setAttribute('aria-hidden', sidebarHidden ? 'true' : 'false');
+                    sidebar.inert = sidebarHidden;
+                    sidebar.querySelectorAll('a').forEach(function(link) {
+                        link.addEventListener('click', function() {
+                            if (window.innerWidth <= 900) setSidebarOpen(false);
+                        });
+                    });
+                }
+
+                window.addEventListener('resize', function() {
+                    if (window.innerWidth > 900 && body.classList.contains('sidebar-open')) {
+                        setSidebarOpen(false);
+                    } else if (sidebar) {
+                        var sidebarHidden = window.innerWidth <= 900 && !body.classList.contains('sidebar-open');
+                        sidebar.setAttribute('aria-hidden', sidebarHidden ? 'true' : 'false');
+                        sidebar.inert = sidebarHidden;
+                    }
+                });
+
+                document.addEventListener('keydown', function(e) {
+                    if (e.key === 'Escape' && body.classList.contains('sidebar-open')) {
+                        setSidebarOpen(false);
                     }
                 });
             }
-
-            // Inject backdrop overlay
-            var layout = document.querySelector('.biz-layout');
-            if (layout) {
-                var backdrop = document.createElement('div');
-                backdrop.className = 'admin-sidebar-backdrop';
-                layout.appendChild(backdrop);
-                backdrop.addEventListener('click', function() {
-                    body.classList.remove('sidebar-open');
-                    var icon = document.getElementById('biz-toggle-icon');
-                    if (icon) icon.className = 'fa-solid fa-bars';
-                });
-            }
-
-            // Close sidebar when window resized above mobile breakpoint
-            window.addEventListener('resize', function() {
-                if (window.innerWidth > 900) {
-                    body.classList.remove('sidebar-open');
-                    var icon = document.getElementById('biz-toggle-icon');
-                    if (icon) icon.className = 'fa-solid fa-bars';
-                }
-            });
-
-            // Close sidebar on Escape key
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape' && body.classList.contains('sidebar-open')) {
-                    body.classList.remove('sidebar-open');
-                    var icon = document.getElementById('biz-toggle-icon');
-                    if (icon) icon.className = 'fa-solid fa-bars';
-                }
-            });
 
             // Auto-wrap all tables in scrollable containers
             document.querySelectorAll('table').forEach(function(table) {

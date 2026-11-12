@@ -46,6 +46,21 @@ require_once '../app/views/partials/lgu-header.php';
         box-shadow: 0 12px 30px rgba(15, 23, 42, 0.04);
     }
 
+    .monitor-stat.stat-flagged {
+        background: #fff1f2;
+        border-color: #fecdd3;
+    }
+
+    .monitor-stat.stat-renovation {
+        background: #eff6ff;
+        border-color: #bfdbfe;
+    }
+
+    .monitor-stat.stat-improved {
+        background: #ecfdf3;
+        border-color: #bbf7d0;
+    }
+
     .monitor-stat .label {
         display: block;
         color: var(--text-muted);
@@ -54,6 +69,13 @@ require_once '../app/views/partials/lgu-header.php';
         letter-spacing: 0.08em;
         text-transform: uppercase;
     }
+
+    .monitor-stat.stat-flagged .label,
+    .monitor-stat.stat-flagged .value { color: #b42318; }
+    .monitor-stat.stat-renovation .label,
+    .monitor-stat.stat-renovation .value { color: #1d4ed8; }
+    .monitor-stat.stat-improved .label,
+    .monitor-stat.stat-improved .value { color: #15803d; }
 
     .monitor-stat .value {
         display: block;
@@ -97,6 +119,7 @@ require_once '../app/views/partials/lgu-header.php';
         font-weight: 700;
         letter-spacing: 0.04em;
         text-transform: uppercase;
+        white-space: nowrap;
     }
 
     .status-normal { background: #dcfce7; color: #166534; }
@@ -120,6 +143,8 @@ require_once '../app/views/partials/lgu-header.php';
         border-bottom: 1px solid #edf0ee;
         text-align: left;
         vertical-align: top;
+        overflow-wrap: normal;
+        word-break: normal;
     }
 
     .monitor-table thead th {
@@ -128,6 +153,7 @@ require_once '../app/views/partials/lgu-header.php';
         letter-spacing: 0.08em;
         color: var(--text-muted);
         text-transform: uppercase;
+        white-space: nowrap;
     }
 
     .monitor-table td {
@@ -219,6 +245,10 @@ require_once '../app/views/partials/lgu-header.php';
         padding: 1rem;
     }
 
+    .swal2-container {
+        z-index: 3000 !important;
+    }
+
     .detail-modal-backdrop.visible {
         display: flex;
     }
@@ -226,7 +256,9 @@ require_once '../app/views/partials/lgu-header.php';
     .detail-modal {
         width: min(900px, 100%);
         max-height: 85vh;
-        overflow: auto;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
         background: white;
         border-radius: 18px;
         box-shadow: 0 25px 60px rgba(15, 23, 42, 0.28);
@@ -234,11 +266,16 @@ require_once '../app/views/partials/lgu-header.php';
     }
 
     .detail-modal-header {
+        position: sticky;
+        top: 0;
+        z-index: 2;
         display: flex;
         align-items: center;
         justify-content: space-between;
         gap: 1rem;
+        flex: 0 0 auto;
         padding: 1.25rem 1.5rem;
+        background: white;
         border-bottom: 1px solid #edf0ee;
     }
 
@@ -249,6 +286,9 @@ require_once '../app/views/partials/lgu-header.php';
     }
 
     .detail-modal-close {
+        display: grid;
+        place-items: center;
+        flex: 0 0 38px;
         border: none;
         background: #f3f4f6;
         color: var(--primary-dark);
@@ -257,9 +297,13 @@ require_once '../app/views/partials/lgu-header.php';
         border-radius: 50%;
         cursor: pointer;
         font-size: 1.1rem;
+        line-height: 1;
     }
 
     .detail-modal-body {
+        min-height: 0;
+        overflow-y: auto;
+        overscroll-behavior: contain;
         padding: 1.5rem;
         display: grid;
         gap: 1rem;
@@ -322,10 +366,41 @@ require_once '../app/views/partials/lgu-header.php';
         resize: vertical;
     }
 
+    @media (max-width: 640px) {
+        .lgu-page-body .monitor-table .monitor-note {
+            width: 100%;
+            max-width: none;
+        }
+        .detail-modal-backdrop { padding: 0.5rem; }
+        .detail-modal {
+            max-height: calc(100vh - 1rem);
+            max-height: calc(100dvh - 1rem);
+            border-radius: 14px;
+        }
+        .detail-modal-header { padding: 0.85rem 1rem; }
+        .detail-modal-header h3 { font-size: 1.1rem; }
+        .detail-modal-body { padding: 1rem; }
+        .monitor-review-actions { gap: 0.5rem; }
+        .monitor-review-actions .btn {
+            padding: 0.7rem 0.25rem;
+            font-size: 0.8rem;
+        }
+    }
+
     .monitor-review-actions {
-        display: flex;
-        flex-wrap: wrap;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 0.75rem;
+    }
+
+    .monitor-review-actions .btn {
+        width: 100%;
+        min-width: 0;
+        justify-content: center;
+        gap: 0.35rem;
+        padding: 0.75rem 0.4rem;
+        font-size: 0.88rem;
+        white-space: nowrap;
     }
 
     .detail-note {
@@ -431,15 +506,15 @@ require_once '../app/views/partials/lgu-header.php';
         ?>
 
         <div class="monitor-stats">
-            <div class="monitor-stat">
+            <div class="monitor-stat stat-flagged">
                 <span class="label">Flagged</span>
                 <span class="value"><?= $warningCount ?></span>
             </div>
-            <div class="monitor-stat">
+            <div class="monitor-stat stat-renovation">
                 <span class="label">Under Renovation</span>
                 <span class="value"><?= $renovationCount ?></span>
             </div>
-            <div class="monitor-stat">
+            <div class="monitor-stat stat-improved">
                 <span class="label">Improved</span>
                 <span class="value"><?= $improvedCount ?></span>
             </div>

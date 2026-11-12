@@ -6,7 +6,8 @@ date_default_timezone_set('Asia/Manila');
 define('DB_HOST', 'localhost');
 define('DB_USER', 'root');
 define('DB_PASS', '');
-define('DB_NAME', 'malangas_tourism');
+$databaseName = getenv('MALANGAS_DB_NAME');
+define('DB_NAME', $databaseName !== false && $databaseName !== '' ? $databaseName : 'malangas_tourism');
 
 // Dynamic Base URL detection
 if (!defined('BASE_URL')) {

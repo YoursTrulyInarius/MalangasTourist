@@ -292,6 +292,40 @@ require_once '../app/views/partials/header.php';
     .auth-form-box { padding: 2rem 1.5rem; border-radius: 1.25rem; }
     .auth-form-title { font-size: 1.7rem; }
 }
+
+.auth-page,
+.auth-page * {
+    box-sizing: border-box;
+}
+
+.auth-right,
+.auth-form-box,
+.input-row,
+.input-row .form-group {
+    min-width: 0;
+}
+
+@media (max-width: 480px) {
+    .auth-page {
+        align-items: flex-start;
+    }
+
+    .auth-right {
+        padding: 1rem 0.75rem;
+    }
+
+    .auth-form-box {
+        width: 100%;
+        max-width: 100%;
+        padding: 1.5rem 1rem;
+        border-radius: 1rem;
+    }
+
+    .form-control {
+        min-width: 0;
+        font-size: 16px;
+    }
+}
 </style>
 
 <div class="auth-page">

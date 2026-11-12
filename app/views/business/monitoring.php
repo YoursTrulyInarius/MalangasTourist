@@ -163,9 +163,26 @@ require_once '../app/views/partials/business-header.php';
     .spacer { height: 1rem; }
 
     @media (max-width: 600px) {
-        .monitor-card-top { flex-direction: column; }
-        .notice-box, .proof-section, .submit-section, .deadline-bar {
-            margin-left: 1rem; margin-right: 1rem;
+        .monitor-card-top {
+            flex-direction: column;
+            padding: 1rem;
+        }
+        .monitor-meta {
+            display: grid;
+            gap: 0.35rem;
+        }
+        .status-pill {
+            align-self: flex-start;
+        }
+        .deadline-bar, .notice-box, .proof-section, .submit-section {
+            margin-left: 0.75rem;
+            margin-right: 0.75rem;
+        }
+        .submit-section { padding: 1rem; }
+        .file-dropzone { padding: 1rem 0.75rem; }
+        .form-actions > * {
+            width: 100%;
+            justify-content: center;
         }
     }
 </style>

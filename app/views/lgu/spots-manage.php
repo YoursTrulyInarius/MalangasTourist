@@ -3,6 +3,28 @@ $title = 'Manage Spots - LGU Admin';
 $activePage = 'spots';
 require_once '../app/views/partials/lgu-header.php';
 ?>
+<style>
+.spots-table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
+}
+.spots-table-responsive .spots-table {
+    min-width: 850px;
+}
+.spots-table th,
+.spots-table td {
+    overflow-wrap: normal;
+    word-break: normal;
+}
+.spots-table th {
+    white-space: nowrap;
+}
+.spot-source-badge,
+.spot-status-badge {
+    white-space: nowrap;
+}
+</style>
 
 <!-- Top Bar -->
 <div class="lgu-topbar">
@@ -28,7 +50,8 @@ require_once '../app/views/partials/lgu-header.php';
         </div>
     </form>
     <div style="background: white; border-radius: 0.75rem; box-shadow: 0 1px 4px rgba(0,0,0,0.07); overflow: hidden;">
-        <table style="width: 100%; border-collapse: collapse; text-align: left;">
+        <div class="table-responsive spots-table-responsive">
+        <table class="spots-table" style="width: 100%; border-collapse: collapse; text-align: left;">
             <thead>
                 <tr style="background: #f8f9fb; border-bottom: 2px solid #e5e7eb;">
                     <th style="padding: 1rem 1.25rem; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); font-weight: 700;">Name</th>
@@ -69,30 +92,33 @@ require_once '../app/views/partials/lgu-header.php';
                                         $badge = ['icon' => 'fa-store', 'label' => 'Private Sector', 'bg' => '#fef3c7', 'color' => '#92400e'];
                                     endif;
                                 ?>
-                                <span style="background: <?= $badge['bg'] ?>; color: <?= $badge['color'] ?>; padding: 0.25rem 0.65rem; border-radius: 999px; font-size: 0.78rem; font-weight: 600;">
+                                <span class="spot-source-badge" style="background: <?= $badge['bg'] ?>; color: <?= $badge['color'] ?>; padding: 0.25rem 0.65rem; border-radius: 999px; font-size: 0.78rem; font-weight: 600;">
                                     <i class="fa-solid <?= $badge['icon'] ?>"></i> <?= $badge['label'] ?>
                                 </span>
                             </td>
                             <td style="padding: 1rem 1.25rem;">
-                                <span style="background: <?= $sc['bg'] ?>; color: <?= $sc['text'] ?>; padding: 0.25rem 0.65rem; border-radius: 999px; font-size: 0.78rem; font-weight: 600; text-transform: capitalize;">
+                                <span class="spot-status-badge" style="background: <?= $sc['bg'] ?>; color: <?= $sc['text'] ?>; padding: 0.25rem 0.65rem; border-radius: 999px; font-size: 0.78rem; font-weight: 600; text-transform: capitalize;">
                                     <?= htmlspecialchars($spot['status']) ?>
                                 </span>
                             </td>
                             <td style="padding: 1rem 1.25rem; white-space: nowrap;">
-                                <a href="<?= BASE_URL ?>/lgu/spots/<?= $spot['id'] ?>/edit" class="btn btn-primary" style="padding: 0.35rem 0.85rem; font-size: 0.82rem; margin-right: 0.35rem;">
-                                    <i class="fa-solid fa-pen"></i> Edit
-                                </a>
-                                <form method="POST" action="<?= BASE_URL ?>/lgu/spots/<?= $spot['id'] ?>/delete" style="display:inline;" class="delete-spot-form" data-delete-confirm="true">
-                                    <button type="submit" class="btn" style="padding:0.35rem 0.85rem;font-size:0.82rem;background:#fee2e2;color:#991b1b;">
-                                        <i class="fa-solid fa-trash"></i> Delete
-                                    </button>
-                                </form>
+                                <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: nowrap;">
+                                    <a href="<?= BASE_URL ?>/lgu/spots/<?= $spot['id'] ?>/edit" class="btn btn-primary" style="display:inline-flex; align-items:center; justify-content:center; gap:0.45rem; padding:0.55rem 1rem; min-width: 96px; font-size:0.82rem; min-height: 38px;">
+                                        <i class="fa-solid fa-pen"></i> Edit
+                                    </a>
+                                    <form method="POST" action="<?= BASE_URL ?>/lgu/spots/<?= $spot['id'] ?>/delete" style="display:inline-flex; margin:0;" class="delete-spot-form" data-delete-confirm="true">
+                                        <button type="submit" class="btn" style="display:inline-flex; align-items:center; justify-content:center; gap:0.45rem; padding:0.55rem 1rem; min-width: 96px; font-size:0.82rem; min-height: 38px; background:#fee2e2;color:#991b1b; border:1px solid #fecaca;">
+                                            <i class="fa-solid fa-trash"></i> Delete
+                                        </button>
+                                    </form>
+                                </div>
                             </td>
                         </tr>
                     <?php endforeach; ?>
                 <?php endif; ?>
             </tbody>
         </table>
+        </div>
     </div>
 </div>
 

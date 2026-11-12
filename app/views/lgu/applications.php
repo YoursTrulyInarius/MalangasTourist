@@ -119,6 +119,28 @@ $statusOptions = [
     font-weight: 500;
     margin-left: auto;
 }
+.app-table-card {
+    background: white;
+    border-radius: 0.75rem;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+    overflow: hidden;
+}
+.app-table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
+}
+.app-table {
+    min-width: 800px;
+}
+.app-table th,
+.app-table td {
+    overflow-wrap: normal;
+    word-break: normal;
+}
+.app-table th {
+    white-space: nowrap;
+}
 </style>
 
 <!-- Top Bar -->
@@ -213,8 +235,9 @@ $statusOptions = [
     <?php endif; ?>
 
     <!-- ── Applications Table ──────────────────────────────────────── -->
-    <div style="background: white; border-radius: 0.75rem; box-shadow: 0 1px 4px rgba(0,0,0,0.07); overflow: hidden;">
-        <table style="width: 100%; border-collapse: collapse; text-align: left;">
+    <div class="app-table-card">
+        <div class="table-responsive app-table-responsive">
+        <table class="app-table" style="width: 100%; border-collapse: collapse; text-align: left;">
             <thead>
                 <tr style="background: #f8f9fb; border-bottom: 2px solid #e5e7eb;">
                     <th style="padding: 1rem 1.25rem; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); font-weight: 700;">Business Name</th>
@@ -273,6 +296,7 @@ $statusOptions = [
                 <?php endif; ?>
             </tbody>
         </table>
+        </div>
     </div>
 </div>
 

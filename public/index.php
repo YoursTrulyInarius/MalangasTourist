@@ -29,6 +29,10 @@ $router->add('GET', '/login', 'AuthController', 'loginForm');
 $router->add('POST', '/login', 'AuthController', 'login');
 $router->add('GET', '/register', 'AuthController', 'registerForm');
 $router->add('POST', '/register', 'AuthController', 'register');
+$router->add('GET', '/tourist/login', 'AuthController', 'touristLoginForm');
+$router->add('POST', '/tourist/login', 'AuthController', 'touristLogin');
+$router->add('GET', '/tourist/register', 'AuthController', 'touristRegisterForm');
+$router->add('POST', '/tourist/register', 'AuthController', 'touristRegister');
 
 $router->add('GET', '/forgot-password', 'AuthController', 'forgotPasswordForm');
 $router->add('POST', '/forgot-password', 'AuthController', 'forgotPasswordRequest');

@@ -22,19 +22,19 @@ require_once '../app/views/partials/business-header.php';
 </div>
 
 <div class="biz-page-body">
-    <div style="max-width: 820px; margin: 0 auto; background: white; border-radius: 0.75rem; box-shadow: 0 1px 4px rgba(0,0,0,0.07); overflow: hidden;">
-        <div style="padding: 1.5rem 2rem; border-bottom: 1px solid #f0f0f0; background: #f8f9fb;">
+    <div class="biz-form-panel" style="max-width: 820px; margin: 0 auto; background: white; border-radius: 0.75rem; box-shadow: 0 1px 4px rgba(0,0,0,0.07); overflow: hidden;">
+        <div class="biz-form-panel-header" style="padding: 1.5rem 2rem; border-bottom: 1px solid #f0f0f0; background: #f8f9fb;">
             <div style="font-weight: 700; font-size: 1rem; color: var(--primary-dark);">Accreditation Application Form</div>
             <div style="font-size: 0.8rem; color: var(--text-muted);">Your application and documents will be reviewed by the LGU before your business appears on the public map. Fields marked with * are required.</div>
         </div>
         
-        <form id="apply-form" action="<?= BASE_URL ?>/api/apply-submit" method="POST" enctype="multipart/form-data" style="padding: 2rem;">
+        <form id="apply-form" class="biz-form-content" action="<?= BASE_URL ?>/api/apply-submit" method="POST" enctype="multipart/form-data" style="padding: 2rem;">
 
             <!-- Document Details Section -->
             <div style="background:#f8f9fa; border:1px solid #e5e7eb; border-radius:0.5rem; padding:1.5rem; margin-bottom:1.5rem;">
                 <h3 style="font-size:0.9rem; margin-bottom:1rem; color:var(--primary-dark); text-transform:uppercase; letter-spacing:0.05em;"><i class="fa-solid fa-file-contract"></i> Required Documents (For LGU Verification)</h3>
                 <p style="font-size:0.82rem; color:var(--text-muted); margin-bottom:1rem;">Please provide your document numbers. (Note: File upload functionality will be added later).</p>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <div class="biz-form-grid" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem;">
                     <div class="form-group" style="margin-bottom:0;">
                         <label for="bir_number" style="font-weight:600; font-size:0.85rem;">B.I.R. Registration Number <span style="color: red;">*</span></label>
                         <input type="text" id="bir_number" name="bir_number" class="form-control" required placeholder="e.g. 123-456-789-000">
@@ -66,7 +66,7 @@ require_once '../app/views/partials/business-header.php';
                 <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.75rem;">Select a barangay, search for your location, or click on the map to pin your exact business location.</p>
                 
                 <!-- Barangay and Location Search Side by Side -->
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                <div class="biz-form-grid" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; margin-bottom: 1rem;">
                     <div>
                         <label for="barangay" style="font-weight:600; font-size:0.85rem;">Barangay</label>
                         <select id="barangay" name="barangay" class="form-control">
@@ -108,7 +108,7 @@ require_once '../app/views/partials/business-header.php';
                 <div style="font-size:0.78rem; color:var(--text-muted); margin-top:0.3rem;">Numbers only, max 11 digits</div>
             </div>
 
-            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem;">
+            <div class="biz-form-grid" style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem;">
                 <div class="form-group">
                     <label for="fb_link">Facebook Link</label>
                     <input type="url" id="fb_link" name="fb_link" class="form-control">
